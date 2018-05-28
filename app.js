@@ -11,6 +11,7 @@ var addrEd = {};
 var addrFd = {};
 var bidsEd = {};
 var asksEd = {};
+var call1 = true;
 var bidsFd = {};
 var asksFd = {};
 var arbFd = {};
@@ -156,45 +157,18 @@ function compare() {
             sellPrice = {};
             edBuys = {};
             edSells = {};
+            call1 = true;
             fdBuys = {};
             fdSells = {};
             arbEd = {};
             threshold = Math.random() * 0.5 + 0.01;
             
             setTimeout(function(){
-                
-            socket.emit("getMarket", {
-                user: "0xb44dd0456ca2eB42506549aAcfF6724826c89599"
-            })
-            }, Math.random() * 10000);
-            setTimeout(function(){
             socket2.emit("getMarket", {
                 user: "0xb44dd0456ca2eB42506549aAcfF6724826c89599"
             })
             }, Math.random() * 10000);
             
-            setTimeout(function(){
-                
-            socket.emit("getMarket", {
-                user: "0xb44dd0456ca2eB42506549aAcfF6724826c89599"
-            })
-            }, Math.random() * 10000);
-            setTimeout(function(){
-            socket2.emit("getMarket", {
-                user: "0xb44dd0456ca2eB42506549aAcfF6724826c89599"
-            })
-            }, Math.random() * 10000);
-            setTimeout(function(){
-                
-            socket.emit("getMarket", {
-                user: "0xb44dd0456ca2eB42506549aAcfF6724826c89599"
-            })
-            }, Math.random() * 10000);
-            setTimeout(function(){
-            socket2.emit("getMarket", {
-                user: "0xb44dd0456ca2eB42506549aAcfF6724826c89599"
-            })
-            }, Math.random() * 10000);
         }, 10000 + 6000 * Object.keys(arbEd).length);
     }
 }
@@ -309,6 +283,11 @@ socket.on("market", function(data) {
 var  threshold = Math.random() * 1 + 0.01;
 console.log('threshold: ' + threshold);
 socket2.on("market", function(data) {
+    if (call1 == true){
+        console.log('call1');
+        call1 = false;
+         socket.emit("getMarket");
+    }
     console.log('lala3');
     if (data.orders) {
         var data6 = data.orders;
