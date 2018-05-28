@@ -345,6 +345,7 @@ socket2.on("market", function(data) {
                 }
             }
         }
+            compare();
         if (gogo2 == true) {
             gogo2 = false;
             for (var emit in arbEd) {
