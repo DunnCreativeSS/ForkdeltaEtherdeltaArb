@@ -160,12 +160,17 @@ function compare() {
             fdSells = {};
             arbEd = {};
             threshold = Math.random() * 0.5 + 0.01;
+            setTimeout(function(){
+                
             socket.emit("getMarket", {
                 user: "0xb44dd0456ca2eB42506549aAcfF6724826c89599"
             })
+            }, Math.random() * 10000);
+            setTimeout(function(){
             socket2.emit("getMarket", {
                 user: "0xb44dd0456ca2eB42506549aAcfF6724826c89599"
             })
+            }, Math.random() * 10000);
         }, 10000 + 6000 * Object.keys(arbEd).length);
     }
 }
