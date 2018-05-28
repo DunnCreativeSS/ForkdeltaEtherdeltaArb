@@ -14,6 +14,8 @@ var asksEd = {};
 var bidsFd = {};
 var asksFd = {};
 var arbFd = {};
+var buyTotals = {};
+var sellTotals = {};
 var buyPrice = {};
 var sellPrice = {};
 var edBuys = {};
@@ -88,13 +90,13 @@ function doTimeout(emit) {
         socket2.emit("getMarket", {
             token: emit
         })
-    }, Math.floor(Math.random() * 15000 * Object.keys(arbEd).length));
+    }, Math.floor(Math.random() * 6000 * Object.keys(arbEd).length));
 }
 
 function compare() {
     if (gocompare == true) {
         gocompare = false;
-        console.log('compare ' + 15000 * Object.keys(arbEd).length);
+        console.log('compare ' + 6000 * Object.keys(arbEd).length + ' threshold: ' + threshold);
         setTimeout(function() {
             console.log('gocompare');
             for (var addr in edBuys) {
@@ -105,12 +107,14 @@ function compare() {
                         console.log('sp: ' + sellPrice[addr]);
                         var arb = -1 * (1 - (buyPrice[addr] / sellPrice[addr]));
                         console.log('arb: ' + arb);
-                        if (arb > 0) {
+                        if (arb > 0.005) {
                             sheet.addRow({
                                 'threshold': threshold,
                                 'arb': (arb * 100) + '%',
                                 'ask': buyPrice[addr],
                                 'bid': sellPrice[addr],
+                                'askVol': buyTotals[addr],
+                                'bidVol': sellTotals[addr],
                                 'link 1': 'https://etherdelta.com/#' + addr + '-ETH',
                                 'link 2': 'https://forkdelta.github.io/#!/trade/' + addr2 + '-ETH'
                             }, function() {})
@@ -146,6 +150,8 @@ function compare() {
             asksFd = {};
             arbFd = {};
             buyPrice = {};
+            buyTotals = {};
+            sellTotals= {};
             gocompare = true;
             sellPrice = {};
             edBuys = {};
@@ -153,14 +159,14 @@ function compare() {
             fdBuys = {};
             fdSells = {};
             arbEd = {};
-            threshold = Math.random() * 1 + 0.02;
+            threshold = Math.random() * 0.5 + 0.01;
             socket.emit("getMarket", {
                 user: "0xb44dd0456ca2eB42506549aAcfF6724826c89599"
             })
             socket2.emit("getMarket", {
                 user: "0xb44dd0456ca2eB42506549aAcfF6724826c89599"
             })
-        }, 10000 + 15000 * Object.keys(arbEd).length);
+        }, 10000 + 6000 * Object.keys(arbEd).length);
     }
 }
 socket.on("market", function(data) {
@@ -191,12 +197,14 @@ socket.on("market", function(data) {
                     if (buys == data6['buys'].length) {
                         buyDone = true;
                         break;
+                        buyTotals[data6['buys'][buys]['tokenGet']] = buyTotal;
                         buyPrice[data6['buys'][buys]['tokenGet']] = 0;
 
                     }
                     buyTotal = buyTotal + parseFloat(data6['buys'][buys]['ethAvailableVolumeBase']);
                     if (buyTotal >= threshold) {
                         buyDone = true;
+                        buyTotals[data6['buys'][buys]['tokenGet']] = buyTotal
                         buyPrice[data6['buys'][buys]['tokenGet']] = data6['buys'][buys]['price'];
                         var bps = buyPrice;
                         break;
@@ -229,6 +237,8 @@ socket.on("market", function(data) {
                     //console.log(edSells);
                     if (sells == data6['sells'].length) {
                         break;
+                       sellTotals[data6['sells'][sells]['tokenGive']] = sellTotal;
+
                         sellPrice[data6['sells'][sells]['tokenGive']] = 1000000;
 
                     }
@@ -236,6 +246,8 @@ socket.on("market", function(data) {
                     sellTotal = sellTotal + parseFloat(data6['sells'][sells]['ethAvailableVolumeBase']);
                     if (sellTotal >= threshold) {
                         sellDone = true;
+                        sellTotals[data6['sells'][sells]['tokenGive']] = sellTotal;
+
                         sellPrice[data6['sells'][sells]['tokenGive']] = data6['sells'][sells]['price'];
 
 
@@ -265,7 +277,8 @@ socket.on("market", function(data) {
         }
     }
 });
-var  threshold = Math.random() * 1 + 0.02;
+var  threshold = Math.random() * 1 + 0.01;
+console.log('threshold: ' + threshold);
 socket2.on("market", function(data) {
     console.log('lala3');
     if (data.orders) {
@@ -293,6 +306,8 @@ socket2.on("market", function(data) {
                     //console.log(fdSells);
                     if (sells == data6['sells'].length) {
                         break;
+                        sellTotals[data6['sells'][sells]['tokenGive']] = sellTotal;
+
                         sellPrice[data6['sells'][sells]['tokenGive']] = 1000000;
 
                     }
@@ -300,6 +315,8 @@ socket2.on("market", function(data) {
                     sellTotal = sellTotal + parseFloat(data6['sells'][sells]['ethAvailableVolumeBase']);
                     if (sellTotal >= threshold) {
                         sellDone = true;
+                                                sellTotals[data6['sells'][sells]['tokenGive']] = sellTotal;
+
                         sellPrice[data6['sells'][sells]['tokenGive']] = data6['sells'][sells]['price'];
 
 
@@ -332,12 +349,16 @@ socket2.on("market", function(data) {
                     if (buys == data6['buys'].length) {
                         buyDone = true;
                         break;
+                        buyTotals[data6['buys'][buys]['tokenGet']] = buyTotal;
+                        
                         buyPrice[data6['buys'][buys]['tokenGet']] = 0;
 
                     }
                     buyTotal = buyTotal + parseFloat(data6['buys'][buys]['ethAvailableVolumeBase']);
                     if (buyTotal >= threshold) {
                         buyDone = true;
+                                                buyTotals[data6['buys'][buys]['tokenGet']] = buyTotal;
+
                         buyPrice[data6['buys'][buys]['tokenGet']] = data6['buys'][buys]['price'];
                         var bps = buyPrice;
                         break;
@@ -368,6 +389,8 @@ socket2.on("market", function(data) {
                 "arb": "",
                 "ask": "",
                 "bid": "",
+                "askVol": "",
+                "bidVol": "",
                 "link 1": "",
                 "link 2": ""
             }, function() {})
