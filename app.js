@@ -115,6 +115,7 @@ function compare() {
 								if (buyTotals){
 									
                             sheet.addRow({
+								'erc20': addr,
                                 'threshold': threshold,
                                 'arb': (arb * 100) + '%',
                                 'ask': buyPrice[addr],
@@ -127,6 +128,7 @@ function compare() {
 							}else{
 								
                             sheet.addRow({
+								'erc20': addr,
                                 'threshold': threshold,
                                 'arb': (arb * 100) + '%',
                                 'ask': buyPrice[addr],
