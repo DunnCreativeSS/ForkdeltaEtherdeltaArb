@@ -393,15 +393,6 @@ socket2.on("market", function(data) {
             }
         }
         setTimeout(function() {
-            sheet.addRow({
-                "arb": "",
-                "ask": "",
-                "bid": "",
-                "askVol": "",
-                "bidVol": "",
-                "link 1": "",
-                "link 2": ""
-            }, function() {})
 
             console.log('lala4');
 
