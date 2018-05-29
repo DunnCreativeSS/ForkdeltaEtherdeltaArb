@@ -156,6 +156,8 @@ function compare() {
             gogo2 = true;
             asksFd = {};
             arbFd = {};
+			emitone = 1;
+			emittwo = 1;
             buyPrice = {};
             buyTotals = {};
             sellTotals= {};
