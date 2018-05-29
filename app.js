@@ -270,8 +270,14 @@ socket.on("market", function(data) {
         }
         if (gogo1 == true) {
             gogo1 = false;
-            for (var emit in arbEd) {
+			var count = 1;
+            for (var emit in arbEd) { 
+			if (count == emitone){
+				emitone++;
                 doTimeout(emit);
+			}
+				count++;
+				
             }
         }
     } else {
@@ -384,8 +390,14 @@ socket2.on("market", function(data) {
             compare();
         if (gogo2 == true) {
             gogo2 = false;
-            for (var emit in arbEd) {
+			var count = 1;
+            for (var emit in arbFd) { 
+			if (count == emittwo){
+				emitone++;
                 doTimeout(emit);
+			}
+				count++;
+				
             }
         }
     } else {
@@ -417,7 +429,7 @@ socket2.on("market", function(data) {
                         if (arb1 > -0.02) {
                             console.log(addr + ' ' + arb1);
                             //	sheet.addRow({'arb': arb1, 'ask': addrFd[addr2].ask, 'bid': addrEd[addr].bid, 'bid link': 'https://etherdelta.com/#'+ addr + '-ETH','ask link': 'https://forkdelta.github.io/#!/trade/'+ addr2 + '-ETH'}, function(){})
-                            arbEd[addr2] = {};
+                            arbEd[addr2] = {addr2};
                             if (goemitone == true) {
                                 goemitone = false;
                                 socket.emit("getMarket", {
@@ -429,6 +441,7 @@ socket2.on("market", function(data) {
                             }
                         }
                         if (arb2 > -0.02) {
+							arbFd[addr] = {addr};
                             console.log(addr + ' ' + arb2);
                             if (goemittwo == true) {
                                 goemittwo = false;
