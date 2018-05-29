@@ -152,7 +152,7 @@ function compare() {
             					console.log('sp: ' + sellPrice[addr]);
             					var arb = -1 * (1 - (buyPrice[addr] / sellPrice[addr]));
             					console.log('arb: ' + arb);
-            					if (arb > 0){
+            					if (arb > 0.005){
 							if (!array.includes(addr)){
 								array.push(addr);
  sheet.addRow({
