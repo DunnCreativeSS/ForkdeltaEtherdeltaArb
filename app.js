@@ -10,6 +10,7 @@ var emittwo = 1;
 var addrEd = {};
 var addrFd = {};
 var bidsEd = {};
+var array = [];
 var asksEd = {};
 var call1 = true;
 var bidsFd = {};
@@ -109,6 +110,8 @@ function compare() {
                         var arb = -1 * (1 - (buyPrice[addr] / sellPrice[addr]));
                         console.log('arb: ' + arb);
                         if (arb > 0.005) {
+							if (!array.includes(addr)){
+								array.push(addr);
                             sheet.addRow({
                                 'threshold': threshold,
                                 'arb': (arb * 100) + '%',
@@ -119,11 +122,11 @@ function compare() {
                                 'link 1': 'https://etherdelta.com/#' + addr + '-ETH',
                                 'link 2': 'https://forkdelta.github.io/#!/trade/' + addr2 + '-ETH'
                             }, function() {})
-                        }
+							}
+						}
                     }
                 }
             }
-            /*
             for (var addr in fdBuys){
             for (var addr2 in edSells){
 
@@ -134,11 +137,14 @@ function compare() {
             					var arb = -1 * (1 - (buyPrice[addr] / sellPrice[addr]));
             					console.log('arb: ' + arb);
             					if (arb > 0){
+							if (!array.includes(addr)){
+								array.push(addr);
             					sheet.addRow({'threshold': threshold, 'arb': arb, 'ask': buyPrice[addr], 'bid':sellPrice[addr], 'bid link': 'https://etherdelta.com/#'+ addr + '-ETH','ask link': 'https://forkdelta.github.io/#!/trade/'+ addr2 + '-ETH'}, function(){})
             				}
+							}
             				}
             }
-            }		*/
+            }		
             goemittwo = true;
             goemitone = true;
             addrEd = {};
@@ -161,6 +167,7 @@ function compare() {
             fdBuys = {};
             fdSells = {};
             arbEd = {};
+			array = [];
             threshold = Math.random() * 0.5 + 0.01;
             
             setTimeout(function(){
