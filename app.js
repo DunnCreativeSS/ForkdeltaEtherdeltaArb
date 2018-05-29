@@ -414,7 +414,7 @@ socket2.on("market", function(data) {
 
                             var arb2 = -1 * (1 - (addrFd[addr2].bid / addrEd[addr].ask));
                         }
-                        if (arb1 > 0) {
+                        if (arb1 > -0.9) {
                             console.log(addr + ' ' + arb1);
                             //	sheet.addRow({'arb': arb1, 'ask': addrFd[addr2].ask, 'bid': addrEd[addr].bid, 'bid link': 'https://etherdelta.com/#'+ addr + '-ETH','ask link': 'https://forkdelta.github.io/#!/trade/'+ addr2 + '-ETH'}, function(){})
                             arbEd[addr2] = {};
@@ -428,7 +428,7 @@ socket2.on("market", function(data) {
                                 })
                             }
                         }
-                        if (arb2 > 0) {
+                        if (arb2 > -0.9) {
                             console.log(addr + ' ' + arb2);
                             if (goemittwo == true) {
                                 goemittwo = false;
