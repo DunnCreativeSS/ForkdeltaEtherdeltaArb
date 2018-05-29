@@ -155,8 +155,17 @@ function compare() {
             					if (arb > 0){
 							if (!array.includes(addr)){
 								array.push(addr);
-            					sheet.addRow({'threshold': threshold, 'arb': arb, 'ask': buyPrice[addr], 'bid':sellPrice[addr], 'bid link': 'https://etherdelta.com/#'+ addr + '-ETH','ask link': 'https://forkdelta.github.io/#!/trade/'+ addr2 + '-ETH'}, function(){})
-            				}
+ sheet.addRow({
+								'erc20': addr,
+                                'threshold': threshold,
+                                'arb': (arb * 100) + '%',
+                                'ask': buyPrice[addr],
+                                'bid': sellPrice[addr],
+                                'askVol': '',
+                                'bidVol': '',
+                                'link 1': 'https://etherdelta.com/#' + addr + '-ETH',
+                                'link 2': 'https://forkdelta.github.io/#!/trade/' + addr2 + '-ETH'
+                            }, function() {})            				}
 							}
             				}
             }
