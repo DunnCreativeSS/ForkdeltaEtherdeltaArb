@@ -112,6 +112,8 @@ function compare() {
                         if (arb > 0.005) {
 							if (!array.includes(addr)){
 								array.push(addr);
+								if (buyTotals){
+									
                             sheet.addRow({
                                 'threshold': threshold,
                                 'arb': (arb * 100) + '%',
@@ -122,6 +124,19 @@ function compare() {
                                 'link 1': 'https://etherdelta.com/#' + addr + '-ETH',
                                 'link 2': 'https://forkdelta.github.io/#!/trade/' + addr2 + '-ETH'
                             }, function() {})
+							}else{
+								}
+                            sheet.addRow({
+                                'threshold': threshold,
+                                'arb': (arb * 100) + '%',
+                                'ask': buyPrice[addr],
+                                'bid': sellPrice[addr],
+                                'askVol': '',
+                                'bidVol': '',
+                                'link 1': 'https://etherdelta.com/#' + addr + '-ETH',
+                                'link 2': 'https://forkdelta.github.io/#!/trade/' + addr2 + '-ETH'
+                            }, function() {})
+							}
 							}
 						}
                     }
