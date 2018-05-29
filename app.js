@@ -125,7 +125,7 @@ function compare() {
                                 'link 2': 'https://forkdelta.github.io/#!/trade/' + addr2 + '-ETH'
                             }, function() {})
 							}else{
-								}
+								
                             sheet.addRow({
                                 'threshold': threshold,
                                 'arb': (arb * 100) + '%',
