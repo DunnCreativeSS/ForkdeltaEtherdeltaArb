@@ -26,7 +26,7 @@ var fdBuys = {};
 var fdSells = {};
 var arbEd = {};
 // spreadsheet key is the long id in the sheets URL
-var doc = new GoogleSpreadsheet('1qesinqLVXnq55bHcVn3F-UUj4oKHOfUPqt2kev1_en4');
+var doc = new GoogleSpreadsheet('1SE_ztgj0NnuZ_zvxL-t7kE1Zy-bdjJx4VPQFvgJz01k');
 var sheet;
 var sheet2;
 var i = 0;
@@ -34,7 +34,6 @@ var goemitone = true;
 var goemittwo = true;
 
 var sleep = require('system-sleep');
-var doc = new GoogleSpreadsheet('1qesinqLVXnq55bHcVn3F-UUj4oKHOfUPqt2kev1_en4');
 var sheet;
 var math = require("mathjs");
 var BigNumber = require("bignumber.js");
