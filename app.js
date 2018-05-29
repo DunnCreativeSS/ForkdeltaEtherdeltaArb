@@ -26,7 +26,7 @@ var fdBuys = {};
 var fdSells = {};
 var arbEd = {};
 // spreadsheet key is the long id in the sheets URL
-var doc = new GoogleSpreadsheet('1qesinqLVXnq55bHcVn3F-UUj4oKHOfUPqt2kev1_en4');
+var doc = new GoogleSpreadsheet('1SE_ztgj0NnuZ_zvxL-t7kE1Zy-bdjJx4VPQFvgJz01k');
 var sheet;
 var sheet2;
 var i = 0;
@@ -155,9 +155,19 @@ function compare() {
             					console.log('arb: ' + arb);
             					if (arb > 0){
 							if (!array.includes(addr)){
-								array.push(addr);
-            					sheet.addRow({'threshold': threshold, 'arb': arb, 'ask': buyPrice[addr], 'bid':sellPrice[addr], 'bid link': 'https://etherdelta.com/#'+ addr + '-ETH','ask link': 'https://forkdelta.github.io/#!/trade/'+ addr2 + '-ETH'}, function(){})
-            				}
+								array.push(addr);                       sheet.addRow({
+								'erc20': addr,
+                                'threshold': threshold,
+                                'arb': (arb * 100) + '%',
+                                'ask': buyPrice[addr],
+                                'bid': sellPrice[addr],
+                                'askVol': buyTotals[addr],
+                                'bidVol': sellTotals[addr],
+                                'link 1': 'https://etherdelta.com/#' + addr + '-ETH',
+                                'link 2': 'https://forkdelta.github.io/#!/trade/' + addr2 + '-ETH'
+                            }, function() {})
+	
+	}
 							}
             				}
             }
@@ -501,7 +511,7 @@ async.series([
     function getInfoAndWorksheets(step) {
         doc.getInfo(function(err, info) {
             console.log('Loaded doc: ' + info.title + ' by ' + info.author.email);
-            sheet = info.worksheets[2];
+            sheet = info.worksheets[0];
             console.log('sheet 1: ' + sheet.title + ' ' + sheet.rowCount + 'x' + sheet.colCount);
             step();
         });
