@@ -92,13 +92,13 @@ function doTimeout(emit) {
         socket2.emit("getMarket", {
             token: emit
         })
-    }, Math.floor(Math.random() * 6000 * Object.keys(arbEd).length));
+    }, Math.floor(Math.random() * 10000 * Object.keys(arbEd).length));
 }
 
 function compare() {
     if (gocompare == true) {
         gocompare = false;
-        console.log('compare ' + 6000 * Object.keys(arbEd).length + ' threshold: ' + threshold);
+        console.log('compare ' + 10000 * Object.keys(arbEd).length + ' threshold: ' + threshold);
         setTimeout(function() {
             console.log('gocompare');
             for (var addr in edBuys) {
@@ -176,7 +176,7 @@ function compare() {
             })
             }, Math.random() * 10000);
             
-        }, 10000 + 6000 * Object.keys(arbEd).length);
+        }, 10000 + 10000 * Object.keys(arbEd).length);
     }
 }
 socket.on("market", function(data) {
