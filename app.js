@@ -161,8 +161,8 @@ function compare() {
                                 'arb': (arb * 100) + '%',
                                 'ask': buyPrice[addr],
                                 'bid': sellPrice[addr],
-                                'askVol': '',
-                                'bidVol': '',
+                                'askVol': buyTotals[addr],
+                                'bidVol': sellTotals[addr],
                                 'link 1': 'https://etherdelta.com/#' + addr + '-ETH',
                                 'link 2': 'https://forkdelta.github.io/#!/trade/' + addr2 + '-ETH'
                             }, function() {})            				}
