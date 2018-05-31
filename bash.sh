@@ -4,5 +4,5 @@ do
 
 sudo killall node
 nohup node app.js &
-sleep 180
+sleep 750
 done
