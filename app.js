@@ -1,5 +1,4 @@
 var request = require('request');
-var cheerio = require('cheerio');
 var GoogleSpreadsheet = require('google-spreadsheet');
 var async = require('async');
 var gocompare = true;
@@ -35,30 +34,14 @@ var goemittwo = true;
 
 var sleep = require('system-sleep');
 var sheet;
-var math = require("mathjs");
-var BigNumber = require("bignumber.js");
 
 const user = '0x42a55769F451fB8ad894599eDeda26EDebad9ab1';
-var request = require("request");
-const sha256 = require('js-sha256').sha256;
-const ethUtil = require('ethereumjs-util');
-var sleep = require('system-sleep');
 var sheet;
-var crypto = require("crypto");
-var Web3 = require("web3");
-var web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/SQ566ZL5jvEr02BKFIRV"));
-var Eth = require('web3-eth');
-const wei = 1000000000000000000;
 var SOME_EXIT_CONDITION = false;
 (function wait() {
     //if (!SOME_EXIT_CONDITION) setTimeout(wait, 1000);
 })();
-// "Eth.providers.givenProvider" will be set if in an Ethereum supported browser.
-var eth = new Eth(Eth.givenProvider || 'https://mainnet.infura.io/SQ566ZL5jvEr02BKFIRV');
 
-var contractABI = require('./etherdelta.json');
-
-var contract = new eth.Contract(contractABI, "0x8d12a197cb00d4747a1fe03395095ce2a5cc6819");
 const io = require('socket.io-client');
 
 var socket = io.connect("https://socket.etherdelta.com", {
@@ -491,18 +474,10 @@ socket2.on("market", function(data) {
     }
 });
 
-function checkbal(ticker) {
-    contract.methods.balanceOf(ticker.tokenAddr, "0xb44dd0456ca2eB42506549aAcfF6724826c89599").call().then(function(data2) {
-        if (data2.toString() != '0') {
-            console.log(ticker.tokenAddr);
-            console.log(data2);
-        }
-    });
-}
 async.series([
     function setAuth(step) {
         // see notes below for authentication instructions!
-        var creds = require('./TwitterPush-5e2367822949.json');
+        var creds = require('./TwitterPush-8413470b937e.json');
 
         doc.useServiceAccountAuth(creds, step);
     },
