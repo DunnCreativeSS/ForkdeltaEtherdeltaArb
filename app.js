@@ -23,6 +23,32 @@ var edBuys = {};
 var edSells = {};
 var fdBuys = {};
 var fdSells = {};
+var math = require("mathjs");
+var Web3 = require("web3");
+var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+var Eth = require('web3-eth');
+const wei = 1000000000000000000;
+var SOME_EXIT_CONDITION = false;
+(function wait () {
+   //if (!SOME_EXIT_CONDITION) setTimeout(wait, 1000);
+})();
+// "Eth.providers.givenProvider" will be set if in an Ethereum supported browser.
+var eth = new Eth(Eth.givenProvider || 'http://localhost:8545');
+
+var contractABI = require('./etherdelta.json');
+var lineReader = require('readline').createInterface({
+    input: require('fs').createReadStream('decimals.csv')
+});
+var decimals = {};
+var count = 0;
+lineReader.on('line', function(line) {
+	if (line.indexOf('currentValue') == -1){
+		decimals[line.split(',')[1]] = line.split(',')[2];
+		console.log(line);
+		count++;
+	}
+});
+var contract = new eth.Contract(contractABI, "0x8d12a197cb00d4747a1fe03395095ce2a5cc6819");
 var arbEd = {};
 // spreadsheet key is the long id in the sheets URL
 var doc = new GoogleSpreadsheet('1SE_ztgj0NnuZ_zvxL-t7kE1Zy-bdjJx4VPQFvgJz01k');
@@ -35,7 +61,8 @@ var goemittwo = true;
 var sleep = require('system-sleep');
 var sheet;
 
-const user = '0x42a55769F451fB8ad894599eDeda26EDebad9ab1';
+const user = '0xddFA7E953270A6d5A62b6bBF4a2442c4CB41F464';
+const pass = "w0rdp4ss";
 var sheet;
 var SOME_EXIT_CONDITION = false;
 (function wait() {
@@ -76,7 +103,102 @@ function doTimeout(emit) {
         })
     }, Math.floor(Math.random() * 10000 * Object.keys(arbEd).length));
 }
+function buyit(tokenAddr, threshold, edSells, winSp){
+		
 
+
+							var callData = contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).call().then(function(data) {
+								
+								var tokenBal = data;
+								//tokenBal = (tokenBal / 1000000000000000000);
+								console.log('eth: ' + tokenBal);
+								const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
+								const tokenGet = tokenAddr; // VERI is what I want to get -- this is a buy order for VERI/ETH
+								const tokenGive = '0x0000000000000000000000000000000000000000'; // 0x0 address means ETH
+
+								var selltotal = 0;
+								console.log(edSells);
+								web3.eth.personal.unlockAccount(user, pass, 120000);
+								
+									for (var sell in edSells){
+								console.log(edSells[sell]);
+								console.log(edSells.length);
+								var nomore = false;
+								if (nomore == false){
+								if (sell != (edSells.length) && parseFloat((selltotal + Number(edSells[sell]['amountGet'])) ) <= parseFloat(threshold)){
+								selltotal = selltotal + parseFloat(edSells[sell]['amountGet']);
+								console.log('selltotal: ' + selltotal);
+								contract.methods.trade( tokenGive,  ((edSells[sell]['amountGet'])),tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],((edSells[sell]['amountGet']))).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+									console.log(data);
+								});
+								}
+								else {
+									console.log(threshold);
+									console.log('hit max selltotal: ' + selltotal);
+									contract.methods.trade(tokenGive,  ((edSells[sell]['amountGet'])), tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],(threshold * wei)).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+									console.log(data);
+									});
+									nomore=true;
+								break;
+									}
+								}
+									sleep(1500);
+								}
+							
+								
+							});
+	}
+	function sellitoff(tokenAddr, threshold, edBuys, winBp){
+		 var callData = contract.methods.balanceOf(tokenAddr, user).call().then(function(data) {
+			var tokenBal =  data;
+			if (tokenBal <= (5 * Math.pow(10, decimals[tokenAddr]))){
+				setTimeout(function() {
+					sellitoff(tokenAddr, threshold, edBuys, winBp);
+				}, 8000)
+			}
+			else {
+			console.log('token bal ed: ' + tokenBal);
+
+
+
+
+		//tokenBal = (tokenBal / Math.pow(10, decimals[tokenAddr]));
+		console.log('decimals[addr]? ' + decimals[tokenAddr]);
+		console.log('do I have ' + tokenBal + " of " + tokenAddr);
+		const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
+		const tokenGet = '0x0000000000000000000000000000000000000000'; // VERI is what I want to get -- this is a buy order for VERI/ETH
+		const tokenGive = tokenAddr; // 0x0 address means ETH
+		web3.eth.personal.unlockAccount(user, pass, 120000);
+			var buytotal = 0;
+			var nomore = false;
+			for (var buy in edBuys){
+				console.log(edBuys.length);
+			if (nomore == false){
+			if (buy != (edBuys.length) && parseFloat((buytotal + Number([buy]['amountGet']))) <= parseFloat(tokenBal)){
+			buytotal = buytotal + Number(edBuys[buy]['amountGet']);
+			console.log('buytotal +1: ' + buytotal);
+			contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet,  (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(edBuys[buy]['amountGet'])).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+				console.log(data);
+				
+			});
+			else {
+				sleep(2200);
+				nomore = true;
+				contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .997)).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+				console.log(data);
+			});
+setTimeout(function() {
+					sellitoff(tokenAddr, threshold, edBuys, winBp);
+				}, 8000)
+			break;
+			}
+			}
+				sleep(1500);
+			}
+
+			}
+});
+	}
 function compare() {
     if (gocompare == true) {
         gocompare = false;
@@ -94,6 +216,7 @@ function compare() {
                         if (arb > 0.005) {
 							if (!array.includes(addr)){
 								array.push(addr);
+								buyit(addr, threshold, edSells[addr], sellPrice[addr]);
 								if (buyTotals){
 									
                             sheet.addRow({
@@ -148,7 +271,9 @@ function compare() {
                                 'bidVol': sellTotals[addr],
                                 'link 1': 'https://etherdelta.com/#' + addr + '-ETH',
                                 'link 2': 'https://forkdelta.github.io/#!/trade/' + addr2 + '-ETH'
-                            }, function() {})            				}
+                            }, function() {})   
+
+							}
 							}
             				}
             }
