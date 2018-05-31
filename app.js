@@ -51,7 +51,7 @@ lineReader.on('line', function(line) {
 var contract = new eth.Contract(contractABI, "0x8d12a197cb00d4747a1fe03395095ce2a5cc6819");
 var arbEd = {};
 // spreadsheet key is the long id in the sheets URL
-var doc = new GoogleSpreadsheet('1SE_ztgj0NnuZ_zvxL-t7kE1Zy-bdjJx4VPQFvgJz01k');
+var doc = new GoogleSpreadsheet('1zP8WKWtUNdX-t24Cs9B4N7W_O08pjXdIXHgE4dzbNt8');
 var sheet;
 var sheet2;
 var i = 0;
@@ -61,7 +61,7 @@ var goemittwo = true;
 var sleep = require('system-sleep');
 var sheet;
 
-const user = '0xddFA7E953270A6d5A62b6bBF4a2442c4CB41F464';
+const user = '0x4a4b4b080D03E8c302bE5bfEA6a7F2A36884773d';
 const pass = "w0rdp4ss";
 var sheet;
 var SOME_EXIT_CONDITION = false;
@@ -119,12 +119,43 @@ function buyit(tokenAddr, threshold, edSells, winSp){
 								var selltotal = 0;
 								console.log(edSells);
 								web3.eth.personal.unlockAccount(user, pass, 120000);
+								var nogo = false;
 								
 									for (var sell in edSells){
+										if (nomore == false){
+			if (buy != (edBuys.length) && parseFloat((buytotal + Number([buy]['amountGet']))) <= parseFloat(tokenBal)){
+			buytotal = buytotal + Number(edBuys[buy]['amountGet']);
+			console.log('buytotal +1: ' + buytotal);
+			contract.methods.testTrade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet,  (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(edBuys[buy]['amountGet'])).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+				console.log(data);
+				if (data == false){
+					nogo = true;
+					console.log('nogo!');
+				}
+			});
+			else {
+				sleep(2200);
+				nomore = true;
+				contract.methods.testTrade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .997)).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+				console.log(data);
+				if (data == false){
+					nogo = true;
+					console.log('nogo!');
+				}
+			});
+			break;
+			}
+			}
+				sleep(1500);
+			}
+									}
+																		for (var sell in edSells){
+
 								console.log(edSells[sell]);
 								console.log(edSells.length);
 								var nomore = false;
-								if (nomore == false){
+								if (nomore == false && nogo == false){
+				console.log('selling...');/*
 								if (sell != (edSells.length) && parseFloat((selltotal + Number(edSells[sell]['amountGet'])) ) <= parseFloat(threshold)){
 								selltotal = selltotal + parseFloat(edSells[sell]['amountGet']);
 								console.log('selltotal: ' + selltotal);
@@ -144,7 +175,7 @@ function buyit(tokenAddr, threshold, edSells, winSp){
 								}
 									sleep(1500);
 								}
-							
+							*/
 								
 							});
 	}
@@ -170,26 +201,57 @@ function buyit(tokenAddr, threshold, edSells, winSp){
 		const tokenGive = tokenAddr; // 0x0 address means ETH
 		web3.eth.personal.unlockAccount(user, pass, 120000);
 			var buytotal = 0;
+			var nogo = false;
 			var nomore = false;
 			for (var buy in edBuys){
 				console.log(edBuys.length);
-			if (nomore == false){
+				
+				if (nomore == false){
 			if (buy != (edBuys.length) && parseFloat((buytotal + Number([buy]['amountGet']))) <= parseFloat(tokenBal)){
 			buytotal = buytotal + Number(edBuys[buy]['amountGet']);
 			console.log('buytotal +1: ' + buytotal);
-			contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet,  (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(edBuys[buy]['amountGet'])).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+			contract.methods.testTrade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet,  (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(edBuys[buy]['amountGet'])).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
 				console.log(data);
-				
+				if (data == false){
+					nogo = true;
+					console.log('nogo!');
+				}
 			});
 			else {
 				sleep(2200);
 				nomore = true;
-				contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .997)).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+				contract.methods.testTrade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .997)).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
 				console.log(data);
+				if (data == false){
+					nogo = true;
+					console.log('nogo!');
+				}
 			});
+			break;
+			}
+			}
+				sleep(1500);
+			}
+			}
+			for (var buy in edBuys){
+			if (nomore == false && nogo == true){
+				console.log('buying...');
+			if (buy != (edBuys.length) && parseFloat((buytotal + Number([buy]['amountGet']))) <= parseFloat(tokenBal)){
+			buytotal = buytotal + Number(edBuys[buy]['amountGet']);
+			console.log('buytotal +1: ' + buytotal);
+			//contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet,  (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(edBuys[buy]['amountGet'])).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+			//	console.log(data);
+				
+			//});
+			else {
+				sleep(2200);
+				nomore = true;
+			//	contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .997)).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+		    //		console.log(data);
+			//});
 setTimeout(function() {
 					sellitoff(tokenAddr, threshold, edBuys, winBp);
-				}, 8000)
+				}, 48000)
 			break;
 			}
 			}
@@ -216,12 +278,19 @@ function compare() {
                         if (arb > 0.005) {
 							if (!array.includes(addr)){
 								array.push(addr);
+								if (buyTotals[addr] < sellTotals[addr]){
+									threshold = buyTotals[addr];
+								}
+								else {
+									threshold = sellTotals[addr];
+								}
 								buyit(addr, threshold, edSells[addr], sellPrice[addr]);
 								if (buyTotals){
 									
                             sheet.addRow({
+								'datetime' : Date.now(),
 								'erc20': addr,
-                                'threshold': threshold,
+                                'balance': threshold,
                                 'arb': (arb * 100) + '%',
                                 'ask': buyPrice[addr],
                                 'bid': sellPrice[addr],
@@ -233,8 +302,9 @@ function compare() {
 							}else{
 								
                             sheet.addRow({
+								'datetime' : Date.now(),
 								'erc20': addr,
-                                'threshold': threshold,
+                                'balance': threshold,
                                 'arb': (arb * 100) + '%',
                                 'ask': buyPrice[addr],
                                 'bid': sellPrice[addr],
@@ -261,9 +331,18 @@ function compare() {
             					if (arb > 0.005){
 							if (!array.includes(addr)){
 								array.push(addr);
+								if (buyTotals[addr] < sellTotals[addr]){
+									threshold = buyTotals[addr];
+								}
+								else {
+									threshold = sellTotals[addr];
+								}
+								buyit(addr, threshold, edSells[addr], sellPrice[addr]);
  sheet.addRow({
+		'datetime': Date.now(),
+		
 								'erc20': addr,
-                                'threshold': threshold,
+                                'balance': threshold,
                                 'arb': (arb * 100) + '%',
                                 'ask': buyPrice[addr],
                                 'bid': sellPrice[addr],
@@ -303,13 +382,16 @@ function compare() {
             fdSells = {};
             arbEd = {};
 			array = [];
-            threshold = Math.random() * 0.5 + 0.01;
+			contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).call().then(function(data) {
+	
+            threshold = data / Math.pow(10,18);
             
             setTimeout(function(){
             socket2.emit("getMarket", {
                 user: "0xb44dd0456ca2eB42506549aAcfF6724826c89599"
             })
             }, Math.random() * 10000);
+			});
             
         }, 10000 + 10000 * Object.keys(arbEd).length);
     }
@@ -428,7 +510,13 @@ socket.on("market", function(data) {
         }
     }
 });
-var  threshold = Math.random() * 1 + 0.01;
+
+ contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).call().then(function(data) {
+								
+								
+var  threshold = data / Math.pow(10,18);
+
+ });
 console.log('threshold: ' + threshold);
 socket2.on("market", function(data) {
     if (call1 == true){
