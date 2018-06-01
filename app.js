@@ -345,6 +345,7 @@ contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).c
                                         'link 2': 'https://forkdelta.github.io/#!/trade/' + addr2 + '-ETH'
                                     }, function() {})
                                 }
+							sleep(15000);
                             }
                         }
                     }
@@ -377,7 +378,7 @@ contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).c
                                     'link 1': 'https://etherdelta.com/#' + addr + '-ETH',
                                     'link 2': 'https://forkdelta.github.io/#!/trade/' + addr2 + '-ETH'
                                 }, function() {})
-
+							sleep(15000);
                             }
                         }
                     }
