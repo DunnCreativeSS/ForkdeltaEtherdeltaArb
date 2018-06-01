@@ -108,7 +108,6 @@ function doTimeout(emit) {
 }
 
 function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
-	gorenew = false;
 	
 var nogo = false;
 var nomore = false;
@@ -286,6 +285,7 @@ var nomore = false;
                     		console.log(data);
                     });
                     setTimeout(function() {
+	gorenew = false;
                         sellitoff(tokenAddr, threshold, edBuys, winBp);
                     }, 48000)
                     break;
