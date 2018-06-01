@@ -179,7 +179,6 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
                 }
                 sleep(1500);
             }
-        }
         for (var sell in edSells) {
 
             console.log(edSells[sell]);
