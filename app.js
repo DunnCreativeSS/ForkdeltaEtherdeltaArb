@@ -135,7 +135,6 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
                             nogo = true;
                             console.log('nogo!');
                         }
-                    });
                 } else {
                     sleep(2200);
                     nomore = true;
@@ -145,7 +144,6 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
                             nogo = true;
                             console.log('nogo!');
                         }
-                    });
                     break;
                 }
             }
@@ -165,7 +163,6 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
                                 nogo = true;
                                 console.log('nogo availvol too low!');
                             }
-                        });
                     } else {
                         sleep(2200);
                         nomore = true;
@@ -175,7 +172,6 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
                                 nogo = true;
                                 console.log('nogo availvol too low!');
                             }
-                        });
                         break;
                     }
                 }
@@ -206,6 +202,10 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
             }
             sleep(1500);
         }
+                        });
+                        });
+                    });
+                    });
     });
 }
 
@@ -245,7 +245,6 @@ function sellitoff(tokenAddr, threshold, edBuys, winBp) {
                                 nogo = true;
                                 console.log('nogo!');
                             }
-                        });
                     } else {
                         sleep(2200);
                         nomore = true;
@@ -255,7 +254,6 @@ function sellitoff(tokenAddr, threshold, edBuys, winBp) {
                                 nogo = true;
                                 console.log('nogo!');
                             }
-                        });
                         break;
                     }
                 }
@@ -286,6 +284,8 @@ function sellitoff(tokenAddr, threshold, edBuys, winBp) {
             sleep(1500);
         }
 gorenew = true;
+                        });
+                        });
         }
     });
 }
