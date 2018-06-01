@@ -135,6 +135,7 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
                             nogo = true;
                             console.log('nogo!');
                         }
+                    });
                 } else {
                     sleep(2200);
                     nomore = true;
@@ -144,6 +145,7 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
                             nogo = true;
                             console.log('nogo!');
                         }
+                    });
                     break;
                 }
             }
@@ -163,6 +165,7 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
                                 nogo = true;
                                 console.log('nogo availvol too low!');
                             }
+                        });
                     } else {
                         sleep(2200);
                         nomore = true;
@@ -172,18 +175,19 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
                                 nogo = true;
                                 console.log('nogo availvol too low!');
                             }
+                        });
                         break;
                     }
                 }
                 sleep(1500);
             }
+			setTimeout(function(){
         for (var sell in edSells) {
 
             console.log(edSells[sell]);
             console.log(edSells.length);
             var nomore = false;
             if (nomore == false && nogo == false) {
-								buyitdone = true;
                 console.log('selling...');
                 if (sell != (edSells.length) && parseFloat((selltotal + Number(edSells[sell]['amountGet']))) <= parseFloat(threshold)) {
                     selltotal = selltotal + parseFloat(edSells[sell]['amountGet']);
@@ -203,10 +207,7 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
             }
             sleep(1500);
         }
-                        });
-                        });
-                    });
-                    });
+			}, 30000);
     });
 }
 
@@ -246,6 +247,7 @@ function sellitoff(tokenAddr, threshold, edBuys, winBp) {
                                 nogo = true;
                                 console.log('nogo!');
                             }
+                        });
                     } else {
                         sleep(2200);
                         nomore = true;
@@ -255,11 +257,13 @@ function sellitoff(tokenAddr, threshold, edBuys, winBp) {
                                 nogo = true;
                                 console.log('nogo!');
                             }
+                        });
                         break;
                     }
                 }
                 sleep(1500);
             }
+			setTimeout(function(){
         for (var buy in edBuys) {
             if (nomore == false && nogo == true) {
                 console.log('buying...');
@@ -284,9 +288,8 @@ function sellitoff(tokenAddr, threshold, edBuys, winBp) {
             }
             sleep(1500);
         }
+			}, 30000);
 gorenew = true;
-                        });
-                        });
         }
     });
 }
@@ -315,6 +318,7 @@ contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).c
                         if (arb > 0.005) {
                             if (!array.includes(addr) && buyitdone == false && gorenew == true) {
                                 array.push(addr);
+								buyitdone = true;
                                 buyit(addr, threshold, fdSells[addr], sellPrice[addr], edBuys[addr], buyPrice[addr]);
                                 if (buyTotals) {
 
@@ -345,7 +349,6 @@ contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).c
                                         'link 2': 'https://forkdelta.github.io/#!/trade/' + addr2 + '-ETH'
                                     }, function() {})
                                 }
-							sleep(15000);
                             }
                         }
                     }
@@ -364,6 +367,7 @@ contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).c
                         if (arb > 0.005) {
                             if (!array.includes(addr) && buyitdone == false && gorenew == true) {
                                 array.push(addr);
+								buyitdone = true;
                                 buyit(addr, threshold, edSells[addr], sellPrice[addr], fdBuys[addr], buyPrice[addr]);
                                 sheet.addRow({
                                     'datetime': Date.now(),
@@ -378,7 +382,7 @@ contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).c
                                     'link 1': 'https://etherdelta.com/#' + addr + '-ETH',
                                     'link 2': 'https://forkdelta.github.io/#!/trade/' + addr2 + '-ETH'
                                 }, function() {})
-							sleep(15000);
+
                             }
                         }
                     }
