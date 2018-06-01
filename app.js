@@ -536,7 +536,7 @@ socket.on("market", function(data) {
     }
 });
 var threshold = 0.1;
-            web3.eth.personal.unlockAccount(user, pass, 120000);
+            eth.personal.unlockAccount(user, pass, 120000);
 
 contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).call().then(function(data) {
 
