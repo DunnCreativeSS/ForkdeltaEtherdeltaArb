@@ -726,7 +726,7 @@ socket2.on("market", function(data) {
                     }
                 }
             }
-        }, 15000);
+        }, 35000);
     }
 });
 
