@@ -306,11 +306,6 @@ function compare() {
                         if (arb > 0.005) {
                             if (!array.includes(addr)) {
                                 array.push(addr);
-                                if (buyTotals[addr] < sellTotals[addr]) {
-                                    threshold = buyTotals[addr];
-                                } else {
-                                    threshold = sellTotals[addr];
-                                }
                                 buyit(addr, threshold, fdSells[addr], sellPrice[addr], edBuys[addr], buyPrice[addr]);
                                 if (buyTotals) {
 
@@ -358,11 +353,6 @@ function compare() {
                         if (arb > 0.005) {
                             if (!array.includes(addr)) {
                                 array.push(addr);
-                                if (buyTotals[addr] < sellTotals[addr]) {
-                                    threshold = buyTotals[addr];
-                                } else {
-                                    threshold = sellTotals[addr];
-                                }
                                 buyit(addr, threshold, edSells[addr], sellPrice[addr], fdBuys[addr], buyPrice[addr]);
                                 sheet.addRow({
                                     'datetime': Date.now(),
