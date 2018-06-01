@@ -183,6 +183,7 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
             console.log(edSells.length);
             var nomore = false;
             if (nomore == false && nogo == false) {
+								buyitdone = true;
                 console.log('selling...');
                 if (sell != (edSells.length) && parseFloat((selltotal + Number(edSells[sell]['amountGet']))) <= parseFloat(threshold)) {
                     selltotal = selltotal + parseFloat(edSells[sell]['amountGet']);
@@ -314,7 +315,6 @@ contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).c
                         if (arb > 0.005) {
                             if (!array.includes(addr) && buyitdone == false && gorenew == true) {
                                 array.push(addr);
-								buyitdone = true;
                                 buyit(addr, threshold, fdSells[addr], sellPrice[addr], edBuys[addr], buyPrice[addr]);
                                 if (buyTotals) {
 
@@ -363,7 +363,6 @@ contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).c
                         if (arb > 0.005) {
                             if (!array.includes(addr) && buyitdone == false && gorenew == true) {
                                 array.push(addr);
-								buyitdone = true;
                                 buyit(addr, threshold, edSells[addr], sellPrice[addr], fdBuys[addr], buyPrice[addr]);
                                 sheet.addRow({
                                     'datetime': Date.now(),
