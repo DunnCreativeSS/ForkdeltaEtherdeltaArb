@@ -25,7 +25,7 @@ var fdBuys = {};
 var fdSells = {};
 var math = require("mathjs");
 var Web3 = require("web3");
-var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+var web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
 var Eth = require('web3-eth');
 const wei = 1000000000000000000;
 var SOME_EXIT_CONDITION = false;
@@ -33,7 +33,7 @@ var SOME_EXIT_CONDITION = false;
     //if (!SOME_EXIT_CONDITION) setTimeout(wait, 1000);
 })();
 // "Eth.providers.givenProvider" will be set if in an Ethereum supported browser.
-var eth = new Eth(Eth.givenProvider || 'http://localhost:8545');
+var eth = new Eth(Eth.givenProvider || 'http://127.0.0.1:8545');
 
 var contractABI = require('./etherdelta.json');
 var lineReader = require('readline').createInterface({
@@ -63,6 +63,7 @@ var sheet;
 
 const user = '0x4a4b4b080D03E8c302bE5bfEA6a7F2A36884773d';
 const pass = "w0rdp4ss";
+
 var sheet;
 var SOME_EXIT_CONDITION = false;
 (function wait() {
@@ -536,7 +537,7 @@ socket.on("market", function(data) {
     }
 });
 var threshold = 0.1;
-            eth.personal.unlockAccount(user, pass, 120000);
+            web3.eth.personal.unlockAccount(user, pass, 120000);
 
 contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).call().then(function(data) {
 
