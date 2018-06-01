@@ -5,6 +5,7 @@ var gocompare = true;
 var emitone = 1;
 var gogo1 = true;
 var gogo2 = true;
+var gorenew = true;
 var emittwo = 1;
 var addrEd = {};
 var addrFd = {};
@@ -106,7 +107,7 @@ function doTimeout(emit) {
 }
 
 function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
-
+	gorenew = false;
 
 
     var callData = contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).call().then(function(data) {
@@ -260,7 +261,6 @@ function sellitoff(tokenAddr, threshold, edBuys, winBp) {
                 }
                 sleep(1500);
             }
-        }
         for (var buy in edBuys) {
             if (nomore == false && nogo == true) {
                 console.log('buying...');
@@ -285,7 +285,8 @@ function sellitoff(tokenAddr, threshold, edBuys, winBp) {
             }
             sleep(1500);
         }
-
+gorenew = true;
+        }
     });
 }
 var buyitdone = false;
@@ -306,7 +307,7 @@ var buyitdone = false;
                         var arb = -1 * (1 - (buyPrice[addr] / sellPrice[addr]));
                         console.log('arb: ' + arb);
                         if (arb > 0.005) {
-                            if (!array.includes(addr) && buyitdone == false) {
+                            if (!array.includes(addr) && buyitdone == false && gorenew == true) {
                                 array.push(addr);
 								buyitdone = true;
                                 buyit(addr, threshold, fdSells[addr], sellPrice[addr], edBuys[addr], buyPrice[addr]);
@@ -355,7 +356,7 @@ var buyitdone = false;
                         var arb = -1 * (1 - (buyPrice[addr] / sellPrice[addr]));
                         console.log('arb: ' + arb);
                         if (arb > 0.005) {
-                            if (!array.includes(addr) && buyitdone == false) {
+                            if (!array.includes(addr) && buyitdone == false && gorenew == true) {
                                 array.push(addr);
 								buyitdone = true;
                                 buyit(addr, threshold, edSells[addr], sellPrice[addr], fdBuys[addr], buyPrice[addr]);
