@@ -132,8 +132,8 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
                 if (buy != (edBuys.length) && parseFloat((buytotal + Number([buy]['amountGet']))) <= parseFloat(tokenBal)) {
                     buytotal = buytotal + Number(edBuys[buy]['amountGet']);
                     console.log('buytotal +1: ' + buytotal);
-                    contract.methods.testTrade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], (edBuys[buy]['amountGet'])).call().then(function(data) {
-                        console.log(data);
+                    contract.methods.testTrade( tokenGive,  ((edSells[sell]['amountGet'])),tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],((edSells[sell]['amountGet']))).call().then(function(data) {
+                    	 console.log(data);
                         if (data == false) {
                             nogo = true;
                             console.log('nogo!');
@@ -142,8 +142,8 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
                 } else {
                     sleep(2200);
                     nomore = true;
-                    contract.methods.testTrade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], (tokenBal * .997)).call().then(function(data) {
-                        console.log(data);
+                    contract.methods.testTrade(tokenGive,  ((edSells[sell]['amountGet'])), tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],(threshold * wei)).call().then(function(data) {
+                   console.log(data);
                         if (data == false) {
                             nogo = true;
                             console.log('nogo!');
