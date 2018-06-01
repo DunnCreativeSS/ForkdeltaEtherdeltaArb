@@ -190,15 +190,15 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
                 if (sell != (edSells.length) && parseFloat((selltotal + Number(edSells[sell]['amountGet']))) <= parseFloat(threshold)) {
                     selltotal = selltotal + parseFloat(edSells[sell]['amountGet']);
                     console.log('selltotal: ' + selltotal);
-                    //	contract.methods.trade( tokenGive,  ((edSells[sell]['amountGet'])),tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],((edSells[sell]['amountGet']))).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
-                    //		console.log(data);
-                    //	});
+                    	contract.methods.trade( tokenGive,  ((edSells[sell]['amountGet'])),tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],((edSells[sell]['amountGet']))).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+                    		console.log(data);
+                    	});
                 } else {
                     console.log(threshold);
                     console.log('hit max selltotal: ' + selltotal);
-                    //contract.methods.trade(tokenGive,  ((edSells[sell]['amountGet'])), tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],(threshold * wei)).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
-                    //console.log(data);
-                    //});
+                    contract.methods.trade(tokenGive,  ((edSells[sell]['amountGet'])), tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],(threshold * wei)).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+                    console.log(data);
+                    });
                     nomore = true;
                     break;
                 }
@@ -267,16 +267,16 @@ function sellitoff(tokenAddr, threshold, edBuys, winBp) {
                 if (buy != (edBuys.length) && parseFloat((buytotal + Number([buy]['amountGet']))) <= parseFloat(tokenBal)) {
                     buytotal = buytotal + Number(edBuys[buy]['amountGet']);
                     console.log('buytotal +1: ' + buytotal);
-                    //contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet,  (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(edBuys[buy]['amountGet'])).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
-                    //	console.log(data);
+                    contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet,  (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(edBuys[buy]['amountGet'])).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+                    	console.log(data);
 
-                    //});
+                    });
                 } else {
                     sleep(2200);
                     nomore = true;
-                    //	contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .997)).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
-                    //		console.log(data);
-                    //});
+                    	contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .997)).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+                    		console.log(data);
+                    });
                     setTimeout(function() {
                         sellitoff(tokenAddr, threshold, edBuys, winBp);
                     }, 48000)
