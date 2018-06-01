@@ -190,13 +190,13 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
                 if (sell != (edSells.length) && parseFloat((selltotal + Number(edSells[sell]['amountGet']))) <= parseFloat(threshold)) {
                     selltotal = selltotal + parseFloat(edSells[sell]['amountGet']);
                     console.log('selltotal: ' + selltotal);
-                    	contract.methods.trade( tokenGive,  ((edSells[sell]['amountGet'])),tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],((edSells[sell]['amountGet']))).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+                    	contract.methods.trade( tokenGive,  ((edSells[sell]['amountGet'])),tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],((edSells[sell]['amountGet']))).send({from: user, gas: 650000,gasPrice: "16000000000"}).then(function(data) {
                     		console.log(data);
                     	});
                 } else {
                     console.log(threshold);
                     console.log('hit max selltotal: ' + selltotal);
-                    contract.methods.trade(tokenGive,  ((edSells[sell]['amountGet'])), tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],(threshold * wei)).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+                    contract.methods.trade(tokenGive,  ((edSells[sell]['amountGet'])), tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],(threshold * wei)).send({from: user, gas: 650000,gasPrice: "16000000000"}).then(function(data) {
                     console.log(data);
                     });
                     nomore = true;
@@ -267,14 +267,14 @@ function sellitoff(tokenAddr, threshold, edBuys, winBp) {
                 if (buy != (edBuys.length) && parseFloat((buytotal + Number([buy]['amountGet']))) <= parseFloat(tokenBal)) {
                     buytotal = buytotal + Number(edBuys[buy]['amountGet']);
                     console.log('buytotal +1: ' + buytotal);
-                    contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet,  (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(edBuys[buy]['amountGet'])).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+                    contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet,  (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(edBuys[buy]['amountGet'])).send({from: user, gas: 650000,gasPrice: "16000000000"}).then(function(data) {
                     	console.log(data);
 
                     });
                 } else {
                     sleep(2200);
                     nomore = true;
-                    	contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .997)).send({from: user, gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+                    	contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .997)).send({from: user, gas: 650000,gasPrice: "16000000000"}).then(function(data) {
                     		console.log(data);
                     });
                     setTimeout(function() {
@@ -288,13 +288,15 @@ function sellitoff(tokenAddr, threshold, edBuys, winBp) {
 
     });
 }
-
-function compare() {
+var buyitdone = false;
+			
+			function compare() {
     if (gocompare == true) {
         gocompare = false;
         console.log('compare ' + 10000 * Object.keys(arbEd).length + ' threshold: ' + threshold);
         setTimeout(function() {
             console.log('gocompare');
+			buyitdone = false;
             for (var addr in edBuys) {
                 for (var addr2 in fdSells) {
                     if (addr == addr2) {
@@ -304,8 +306,9 @@ function compare() {
                         var arb = -1 * (1 - (buyPrice[addr] / sellPrice[addr]));
                         console.log('arb: ' + arb);
                         if (arb > 0.005) {
-                            if (!array.includes(addr)) {
+                            if (!array.includes(addr) && buyitdone == false) {
                                 array.push(addr);
+								buyitdone = true;
                                 buyit(addr, threshold, fdSells[addr], sellPrice[addr], edBuys[addr], buyPrice[addr]);
                                 if (buyTotals) {
 
@@ -341,6 +344,7 @@ function compare() {
                     }
                 }
             }
+			buyitdone = false;
             for (var addr in fdBuys) {
                 for (var addr2 in edSells) {
 
@@ -351,8 +355,9 @@ function compare() {
                         var arb = -1 * (1 - (buyPrice[addr] / sellPrice[addr]));
                         console.log('arb: ' + arb);
                         if (arb > 0.005) {
-                            if (!array.includes(addr)) {
+                            if (!array.includes(addr) && buyitdone == false) {
                                 array.push(addr);
+								buyitdone = true;
                                 buyit(addr, threshold, edSells[addr], sellPrice[addr], fdBuys[addr], buyPrice[addr]);
                                 sheet.addRow({
                                     'datetime': Date.now(),
