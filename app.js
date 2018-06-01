@@ -294,6 +294,11 @@ var buyitdone = false;
 			function compare() {
     if (gocompare == true) {
         gocompare = false;
+contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).call().then(function(data) {
+
+
+    threshold = data / Math.pow(10, 18);
+
         console.log('compare ' + 10000 * Object.keys(arbEd).length + ' threshold: ' + threshold);
         setTimeout(function() {
             console.log('gocompare');
@@ -416,7 +421,8 @@ var buyitdone = false;
             });
 
         }, 10000 + 10000 * Object.keys(arbEd).length);
-    }
+});
+	} 
 }
 socket.on("market", function(data) {
     console.log('lala2');
