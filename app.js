@@ -310,7 +310,7 @@ function compare() {
                                 } else {
                                     threshold = sellTotals[addr];
                                 }
-                                buyit(addr, threshold, fdSells[addr], sellPrice[addr], edBuys[addr]. buyPrice[addr]);
+                                buyit(addr, threshold, fdSells[addr], sellPrice[addr], edBuys[addr], buyPrice[addr]);
                                 if (buyTotals) {
 
                                     sheet.addRow({
