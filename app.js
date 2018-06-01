@@ -4,6 +4,9 @@ var async = require('async');
 var gocompare = true;
 var emitone = 1;
 var gogo1 = true;
+
+var nogo = false;
+var nomore = false;
 var gogo2 = true;
 var gorenew = true;
 var emittwo = 1;
@@ -122,7 +125,7 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
         var selltotal = 0;
         console.log(edSells);
         web3.eth.personal.unlockAccount(user, pass, 120000);
-        var nogo = false;
+        nogo = false;
 
         for (var sell in edSells) {
             if (nomore == false) {
@@ -186,7 +189,7 @@ function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
 
             console.log(edSells[sell]);
             console.log(edSells.length);
-            var nomore = false;
+           nomore = false;
             if (nomore == false && nogo == false) {
                 console.log('selling...');
                 if (sell != (edSells.length) && parseFloat((selltotal + Number(edSells[sell]['amountGet']))) <= parseFloat(threshold)) {
@@ -232,8 +235,8 @@ function sellitoff(tokenAddr, threshold, edBuys, winBp) {
             const tokenGive = tokenAddr; // 0x0 address means ETH
             web3.eth.personal.unlockAccount(user, pass, 120000);
             var buytotal = 0;
-            var nogo = false;
-            var nomore = false;
+            nogo = false;
+            nomore = false;
             for (var buy in edBuys) {
                 console.log(edBuys.length);
 
