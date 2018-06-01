@@ -5,8 +5,6 @@ var gocompare = true;
 var emitone = 1;
 var gogo1 = true;
 
-var nogo = false;
-var nomore = false;
 var gogo2 = true;
 var gorenew = true;
 var emittwo = 1;
@@ -111,7 +109,9 @@ function doTimeout(emit) {
 
 function buyit(tokenAddr, threshold, edSells, winSp, edBuys, winBp) {
 	gorenew = false;
-
+	
+var nogo = false;
+var nomore = false;
 
     var callData = contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).call().then(function(data) {
 
@@ -224,6 +224,8 @@ function sellitoff(tokenAddr, threshold, edBuys, winBp) {
         } else {
             console.log('token bal ed: ' + tokenBal);
 
+var nogo = false;
+var nomore = false;
 
 
 
